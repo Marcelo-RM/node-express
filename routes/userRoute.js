@@ -8,13 +8,19 @@ const getUsers = () => {
 
     try {
         var jsonModel = JSON.parse(data);
-        return jsonModel.sort((a, b) => a.id - b.id);
+        return sortUser(jsonModel);
     } catch (error) {
         return [];
     }
 }
 
-const saveUser = (users) => fs.writeFileSync(filePath, JSON.stringify(users, null, "\t"));
+const saveUser = (users) => {
+	const usersSorted = sortUser(users);
+	fs.writeFileSync(filePath, JSON.stringify(usersSorted, null, "\t"));
+}
+	
+
+const sortUser = (users) => users.sort((a, b) => a.id - b.id);
 
 const userRoute = (app) => {
     app.route("/users/:id?")
